@@ -34,8 +34,6 @@ services:
     environment:
       - MOBSF_API_KEY=mobsfapikey123
       - MOBSF_ANALYZER_IDENTIFIER=android-sandbox-1:5555
-    volumes:
-      - mobsfdata:/home/mobsf/.MobSF
 
   android-sandbox-1:
     image: us-docker.pkg.dev/android-emulator-268719/images/30-google-x64:latest
@@ -121,6 +119,5 @@ services:
 volumes:
   pgdata:
   redisdata:
-  mobsfdata:
   uploadsdata:
   whatsappdata:

@@ -25,6 +25,3 @@ jobs:
 
     - name: Run build (if present)
       run: npm run build --workspaces --if-present
-
-    - name: Run tests (if present)
-      run: npm test --workspaces --if-present

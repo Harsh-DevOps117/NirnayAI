@@ -33,6 +33,11 @@ export const analyzeMobSFReport = async (staticReport: any, dynamicReport: any):
       "executive_summary": "string (A clear, 3-sentence paragraph summarizing the app's hidden intent, masquerading behavior, and threat level to bank customers)",
       "risk_score": integer (0 to 100),
       "threat_classification": "string (e.g., 'Critical / Financial Trojan', 'Low Risk / Adware', 'Clean')",
+      "install_verdict": "string (Must be exactly 'YES', 'NO', or 'CAUTION' indicating if the user should install this app)",
+      "install_guidelines": [
+        "string (Actionable guideline 1 for the end-user considering installing this app)",
+        "string (Actionable guideline 2)"
+      ],
       "malicious_capabilities": [
         {
           "capability": "string (The concise title of the threat vector, e.g., 'OTP Interception', 'Overlay Attack Pattern', 'C2 Data Exfiltration')",

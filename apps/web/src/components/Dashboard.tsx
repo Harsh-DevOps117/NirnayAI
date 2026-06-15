@@ -123,50 +123,51 @@ export const Dashboard = ({
           </div>
 
           <div className="p-6 sm:p-7">
-            <div className="mb-4 flex flex-wrap items-center gap-2">
-              <span className="inline-flex max-w-full items-center gap-2 rounded-lg border border-white/10 bg-[#0a0a0e] px-3 py-2 text-sm font-medium text-slate-300 shadow-sm">
+            <div className="mb-4 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2">
+              <span className="inline-flex max-w-full items-center gap-2 rounded-lg border border-white/10 bg-[#0a0a0e] px-3 py-2 text-xs sm:text-sm font-medium text-slate-300 shadow-sm">
                 <Code className="h-4 w-4 shrink-0 text-slate-400" />
                 <span className="truncate font-mono">{packageName}</span>
               </span>
-              <span className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-[#0a0a0e] px-3 py-2 text-sm font-medium text-slate-300 shadow-sm">
+              <span className="inline-flex self-start sm:self-auto items-center gap-2 rounded-lg border border-white/10 bg-[#0a0a0e] px-3 py-2 text-xs sm:text-sm font-medium text-slate-300 shadow-sm">
                 <AlertTriangle className="h-4 w-4 text-rose-600" />
                 {(report.malicious_capabilities || []).length} threat vectors
               </span>
             </div>
 
-            <p className="text-sm font-semibold uppercase text-slate-400">
+            <p className="text-xs sm:text-sm font-semibold uppercase text-slate-400">
               Threat classification
             </p>
-            <h1 className="mt-2 max-w-4xl text-3xl font-semibold tracking-tight text-white">
+            <h1 className="mt-2 max-w-4xl text-2xl sm:text-3xl font-semibold tracking-tight text-white">
               {report.threat_classification || "Unknown Classification"}
             </h1>
-            <p className="mt-4 max-w-4xl text-sm leading-7 text-slate-400">
+            <p className="mt-3 sm:mt-4 max-w-4xl text-sm leading-6 sm:leading-7 text-slate-400">
               Review the risk score, evidence-backed capabilities, and
               recommended mitigation actions for this APK package.
             </p>
 
-            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="rounded-xl border border-white/10 bg-[#0a0a0e] p-4 shadow-sm">
-                <p className="text-xs font-medium uppercase text-slate-400">
+            <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3">
+              <div className="flex flex-col items-center justify-center sm:items-start rounded-xl border border-white/10 bg-[#0a0a0e] p-3 sm:p-4 shadow-sm text-center sm:text-left">
+                <p className="text-[10px] sm:text-xs font-medium uppercase text-slate-400 line-clamp-1">
                   Risk score
                 </p>
-                <p className="mt-2 text-2xl font-semibold text-white">
-                  {report.risk_score ?? 0}/100
+                <p className="mt-1 sm:mt-2 text-lg sm:text-2xl font-semibold text-white">
+                  {report.risk_score ?? 0}
+                  <span className="text-xs sm:text-base text-slate-500">/100</span>
                 </p>
               </div>
-              <div className="rounded-xl border border-white/10 bg-[#0a0a0e] p-4 shadow-sm">
-                <p className="text-xs font-medium uppercase text-slate-400">
+              <div className="flex flex-col items-center justify-center sm:items-start rounded-xl border border-white/10 bg-[#0a0a0e] p-3 sm:p-4 shadow-sm text-center sm:text-left">
+                <p className="text-[10px] sm:text-xs font-medium uppercase text-slate-400 line-clamp-1">
                   Vectors
                 </p>
-                <p className="mt-2 text-2xl font-semibold text-white">
+                <p className="mt-1 sm:mt-2 text-lg sm:text-2xl font-semibold text-white">
                   {(report.malicious_capabilities || []).length}
                 </p>
               </div>
-              <div className="rounded-xl border border-white/10 bg-[#0a0a0e] p-4 shadow-sm">
-                <p className="text-xs font-medium uppercase text-slate-400">
+              <div className="flex flex-col items-center justify-center sm:items-start rounded-xl border border-white/10 bg-[#0a0a0e] p-3 sm:p-4 shadow-sm text-center sm:text-left">
+                <p className="text-[10px] sm:text-xs font-medium uppercase text-slate-400 line-clamp-1">
                   Mitigations
                 </p>
-                <p className="mt-2 text-2xl font-semibold text-white">
+                <p className="mt-1 sm:mt-2 text-lg sm:text-2xl font-semibold text-white">
                   {(report.actionable_recommendations_for_bank || []).length}
                 </p>
               </div>

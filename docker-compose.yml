@@ -32,7 +32,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - MOBSF_API_KEY=mobsfapikey123
+      - MOBSF_API_KEY=a41a3dd0bc9afdcd2513856a9a70966f4e308be67fca69de9ea9614613f54835
       - MOBSF_ANALYZER_IDENTIFIER=android-sandbox-1:5555
 
   android-sandbox-1:

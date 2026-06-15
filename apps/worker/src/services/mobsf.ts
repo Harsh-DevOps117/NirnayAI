@@ -2,7 +2,7 @@ import axios from 'axios';
 import FormData from 'form-data';
 
 const MOBSF_URL = process.env.MOBSF_URL || 'http://localhost:8000';
-const MOBSF_API_KEY = process.env.MOBSF_API_KEY || 'mobsfapikey123';
+const MOBSF_API_KEY = process.env.MOBSF_API_KEY || 'a41a3dd0bc9afdcd2513856a9a70966f4e308be67fca69de9ea9614613f54835';
 
 const mobsfClient = axios.create({
   baseURL: MOBSF_URL,

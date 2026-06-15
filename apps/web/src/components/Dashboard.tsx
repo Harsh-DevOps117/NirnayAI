@@ -137,7 +137,7 @@ export const Dashboard = ({
             <p className="text-[11px] sm:text-sm font-semibold uppercase text-slate-400 tracking-wider">
               Threat classification
             </p>
-            <h1 className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold tracking-tight text-white leading-tight">
+            <h1 className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold tracking-tight text-white leading-tight break-words">
               {report.threat_classification || "Unknown Classification"}
             </h1>
             <p className="mt-2 sm:mt-4 text-xs sm:text-sm leading-relaxed sm:leading-7 text-slate-400">
@@ -277,13 +277,13 @@ export const Dashboard = ({
                     <p className="text-[10px] sm:text-xs font-semibold uppercase text-rose-400 tracking-wider">
                       Vector {idx + 1}
                     </p>
-                    <h3 className="mt-0.5 sm:mt-1 text-xs sm:text-sm font-semibold text-white leading-tight">
+                    <h3 className="mt-0.5 sm:mt-1 text-xs sm:text-sm font-semibold text-white leading-tight break-words">
                       {cap.capability}
                     </h3>
                   </div>
                 </div>
                 <div className="p-3 sm:p-4">
-                  <p className="text-xs sm:text-sm leading-relaxed sm:leading-6 text-slate-400">
+                  <p className="text-xs sm:text-sm leading-relaxed sm:leading-6 text-slate-400 break-words">
                     {cap.proof}
                   </p>
                 </div>

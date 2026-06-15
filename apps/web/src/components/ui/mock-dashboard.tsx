@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Activity, ShieldCheck, Terminal, ShieldAlert, Cpu, AlertTriangle, FileCode, Server, Network } from 'lucide-react';
 import { motion } from 'framer-motion';
 

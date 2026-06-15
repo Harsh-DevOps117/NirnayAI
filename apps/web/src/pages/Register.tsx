@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { SignInPage, type Testimonial } from "../components/ui/sign-in";
+import { SignInPage } from "../components/ui/sign-in";
 import { CyberVisual } from "../components/ui/cyber-visual";
 import { MeshBackground } from "../components/ui/mesh-background";
 
@@ -12,27 +12,6 @@ const GlassInputWrapper = ({ children }: { children: React.ReactNode }) => (
     {children}
   </div>
 );
-
-const sampleTestimonials: Testimonial[] = [
-  {
-    avatarSrc: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=150&auto=format&fit=crop",
-    name: "Dr. Sarah Chen",
-    handle: "@sarahdigital",
-    text: "NirnayAI's autonomous threat hunting completely transformed how we analyze Android binaries. Unparalleled accuracy."
-  },
-  {
-    avatarSrc: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=150&auto=format&fit=crop",
-    name: "Marcus Johnson",
-    handle: "@marcustech",
-    text: "The speed at which it decodes malicious intent is incredible. A must-have tool for modern security teams."
-  },
-  {
-    avatarSrc: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=150&auto=format&fit=crop",
-    name: "David Martinez",
-    handle: "@davidsec",
-    text: "Deep malware analysis has never been this accessible. The UI is gorgeous and the AI insights are incredibly deep."
-  },
-];
 
 export const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +55,6 @@ export const Register = () => {
           description="Request clearance to access the NirnayAI platform. Register your identity to unlock dynamic analysis and AI threat decoding."
           rightPanelContent={<CyberVisual />}
           onSignIn={handleRegisterSubmit}
-          onGoogleSignIn={() => toast.info("Google sign-in initialized...", { theme: "dark" })}
           onCreateAccount={() => navigate("/login")}
           isLoading={isLoading}
           footerText="Already have clearance?"

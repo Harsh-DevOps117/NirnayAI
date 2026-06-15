@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Hammer } from "lucide-react";
 import { MeshBackground } from "../components/ui/mesh-background";

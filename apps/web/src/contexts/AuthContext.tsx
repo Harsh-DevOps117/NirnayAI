@@ -17,7 +17,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const API_BASE = 'http://localhost:3000/api/v1';
+export const API_BASE = '/api/v1';
 
 // Configure Axios Defaults
 axios.defaults.baseURL = API_BASE;

@@ -4,7 +4,7 @@ import { HowItWorks } from "./how-it-works";
 import { Testimonials } from "./testimonials";
 import { Footer } from "./footer";
 import { ArrowRight, Menu, X } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Inline Button Component
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

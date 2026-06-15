@@ -34,6 +34,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api-server
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/worker
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/whatsapp-bot
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web
 
       - name: Build and push API Server
         uses: docker/build-push-action@v5
@@ -60,6 +61,15 @@ jobs:
           file: apps/whatsapp/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/whatsapp-bot:latest
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and push Web (Nginx)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/web/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web:latest
           labels: ${{ steps.meta.outputs.labels }}
 
   deploy:

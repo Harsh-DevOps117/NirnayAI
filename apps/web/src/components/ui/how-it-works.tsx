@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { UploadCloud, Cpu, ShieldAlert, FileCheck2 } from 'lucide-react';
 

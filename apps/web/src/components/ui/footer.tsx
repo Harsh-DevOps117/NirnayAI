@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { ShieldCheck, Globe, Mail, MessageSquare, Terminal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

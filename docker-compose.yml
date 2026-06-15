@@ -47,7 +47,7 @@ services:
 
 
 
-  nginx:
+  web:
     image: ghcr.io/harsh-devops117/nirnayai/web:latest
     build:
       context: .

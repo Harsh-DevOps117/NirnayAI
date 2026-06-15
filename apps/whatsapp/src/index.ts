@@ -107,7 +107,8 @@ async function connectToWhatsApp() {
           },
         });
 
-        const { scanId, cached, report } = response.data;
+        const scanData = response.data?.data || response.data;
+        const { scanId, cached, report } = scanData;
 
         if (cached) {
           await sendReportToWhatsApp(sock, sender, report);
@@ -150,32 +151,41 @@ async function connectToWhatsApp() {
 }
 
 async function sendReportToWhatsApp(sock: any, jid: string, report: any) {
-  const emojis: Record<string, string> = {
-    LOW: "🟢",
-    MEDIUM: "🟡",
-    HIGH: "🟠",
-    CRITICAL: "🔴",
-  };
+  const riskScore = report.risk_score ?? 0;
+  
+  let riskLevel = "LOW";
+  let emoji = "🟢";
+  if (riskScore >= 70) {
+    riskLevel = "CRITICAL";
+    emoji = "🔴";
+  } else if (riskScore >= 40) {
+    riskLevel = "ELEVATED";
+    emoji = "🟡";
+  }
 
-  const emoji = emojis[report.riskLevel] || "⚪";
+  const vectors = (report.malicious_capabilities || []).map((c: any) => `• ${c.capability}`).join("\n") || "None identified";
+  const mitigations = (report.actionable_recommendations_for_bank || []).map((r: any) => `• ${r}`).join("\n") || "None";
+  
+  const installVerdict = report.install_verdict || (riskScore < 50 ? "YES (Safe to Install)" : riskScore < 80 ? "CAUTION (Proceed Carefully)" : "NO (DO NOT INSTALL)");
 
   const text = `
 *NirnayAI Malware Analysis Report*
-${emoji} *Risk Level:* ${report.riskLevel}
-*Risk Score:* ${report.riskScore}/100
+${emoji} *Risk Level:* ${riskLevel}
+*Risk Score:* ${riskScore}/100
+*Verdict:* ${installVerdict}
 
-*Summary:*
-${report.summary}
+*Threat Classification:*
+${report.threat_classification || "Unknown"}
 
-*Suspicious Behaviors:*
-${report.suspiciousBehaviors?.map((b: string) => `• ${b}`).join("\n") || "None"}
+*Executive Summary:*
+${report.executive_summary || "No summary provided."}
 
-*Dangerous Permissions:*
-${report.dangerousPermissionsUsed?.map((p: string) => `• ${p}`).join("\n") || "None"}
+*Identified Threat Vectors:*
+${vectors}
 
-*Recommendation:*
-${report.recommendation}
-    `.trim();
+*Recommended Mitigations:*
+${mitigations}
+  `.trim();
 
   await sock.sendMessage(jid, { text });
 }

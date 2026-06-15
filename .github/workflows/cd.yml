@@ -2,7 +2,7 @@ name: CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 env:
   REGISTRY: ghcr.io
@@ -73,12 +73,12 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /opt/nirnayai
+            cd /home/azureuser/NirnayAI
             # Ensure the server is authenticated with GHCR to pull images
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
             # Pull the latest code (for docker-compose.yml changes)
-            git pull origin main
+            git pull origin master
             
             # Pull the latest images
             docker compose pull

@@ -187,9 +187,9 @@ const RiskGauge = ({ score }: { score: number }) => {
   const color = normalized >= 70 ? '#e11d48' : normalized >= 35 ? '#d97706' : '#059669';
 
   return (
-    <div className="flex items-center gap-5">
+    <div className="flex flex-col sm:flex-row items-center gap-5">
       <div
-        className="grid h-32 w-32 place-items-center rounded-full shadow-[0_0_20px_rgba(16,185,129,0.15)]"
+        className="grid h-32 w-32 shrink-0 place-items-center rounded-full shadow-[0_0_20px_rgba(16,185,129,0.15)]"
         style={{ background: `conic-gradient(${color} ${normalized * 3.6}deg, rgba(255,255,255,0.05) 0deg)` }}
       >
         <div className="grid h-24 w-24 place-items-center rounded-full bg-[#0a0a0e] border border-white/5">
@@ -199,10 +199,10 @@ const RiskGauge = ({ score }: { score: number }) => {
           </div>
         </div>
       </div>
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 text-center sm:text-left">
         <p className="text-sm font-semibold text-white">Security pulse</p>
         <p className="mt-1 text-sm leading-6 text-slate-400">Current scan history is trending {normalized >= 70 ? 'critical' : normalized >= 35 ? 'elevated' : 'stable'}.</p>
-        <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2 text-center">
           <div className="rounded-lg border border-white/10 bg-[#0a0a0e]/5 p-2">
             <p className="text-xs font-medium text-slate-400">Static</p>
             <p className="text-sm font-semibold text-emerald-400">Online</p>
@@ -217,6 +217,51 @@ const RiskGauge = ({ score }: { score: number }) => {
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+const SCANNING_MESSAGES = [
+  "Your app is being scanned... \u231B",
+  "Decompiling the APK and extracting assets...",
+  "Running static analysis on source code...",
+  "Searching for hardcoded API keys & secrets...",
+  "Reviewing AndroidManifest.xml permissions...",
+  "Preparing secure sandbox for dynamic testing...",
+  "Executing the app to monitor real-time behavior...",
+  "Tracking network requests and local storage writes...",
+  "This can take about 3-5 minutes, go grab a coffee! \u2615",
+  "Feeding data to AI for intelligence report...",
+];
+
+const ScanningMessages = () => {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % SCANNING_MESSAGES.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="mt-6 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4 text-center">
+      <div className="flex items-center justify-center gap-2 mb-2 text-emerald-400">
+        <Loader2 className="h-4 w-4 animate-spin" />
+        <p className="text-sm font-semibold uppercase tracking-wider">Analysis in Progress</p>
+      </div>
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={index}
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -5 }}
+          transition={{ duration: 0.3 }}
+          className="text-sm text-slate-300"
+        >
+          {SCANNING_MESSAGES[index]}
+        </motion.p>
+      </AnimatePresence>
     </div>
   );
 };
@@ -528,6 +573,8 @@ function DashboardView() {
               <PipelineStep label="Manifest and permission mapping" complete={['AI_SUMMARIZATION', 'COMPLETED'].includes(currentDetailedStatus)} active={currentDetailedStatus === 'DYNAMIC_SCANNING' || currentDetailedStatus === 'STATIC_SCANNING'} />
               <PipelineStep label="Generate intelligence report" complete={currentDetailedStatus === 'COMPLETED'} active={currentDetailedStatus === 'AI_SUMMARIZATION'} />
             </div>
+            
+            {(uploadStatus === 'uploading' || uploadStatus === 'analyzing') && <ScanningMessages />}
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} className={cn(cardClass, 'p-5 xl:col-span-4')}>

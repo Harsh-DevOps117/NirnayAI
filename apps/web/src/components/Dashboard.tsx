@@ -88,6 +88,7 @@ export const Dashboard = ({
             "Critical Threat Detected. High risk of dangerous behaviors like screen overlays or data exfiltration. Immediate removal/blocking is advised.",
           ]);
 
+  return (
     <div className="w-full animate-in fade-in slide-in-from-bottom-4 space-y-4 sm:space-y-6 duration-500">
       <section
         className={`overflow-hidden rounded-xl sm:rounded-2xl border border-white/10 bg-gradient-to-br ${risk.panel} shadow-[0_8px_30px_rgb(0,0,0,0.06)] backdrop-blur-2xl`}

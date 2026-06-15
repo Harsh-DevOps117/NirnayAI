@@ -55,6 +55,15 @@ export const Dashboard = ({ report, packageName = 'com.unknown.app' }: Dashboard
   const risk = getRiskStyle(report.risk_score);
   const isHighRisk = report.risk_score >= 70;
 
+  const derivedVerdict = report.install_verdict || (report.risk_score < 50 ? 'YES' : report.risk_score < 80 ? 'CAUTION' : 'NO');
+  const derivedGuidelines = report.install_guidelines || (
+    report.risk_score < 50 
+      ? ["You can safely install and use this application.", "No critical hidden threats or severe malware behaviors were detected."]
+      : report.risk_score < 80
+      ? ["You can keep this app, but proceed with caution.", "Review the permissions requested by the app in your device settings.", "Do not grant SMS, Call Log, or Accessibility permissions unless absolutely necessary.", "Monitor the app for unexpected battery drain or network usage."]
+      : ["Do not install this application under any circumstances.", "It exhibits severe malicious capabilities such as overlay attacks or data exfiltration.", "If already installed, remove it immediately and change your banking passwords."]
+  );
+
   return (
     <div className="w-full animate-in fade-in slide-in-from-bottom-4 space-y-6 duration-500">
       <section className={`overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br ${risk.panel} shadow-[0_8px_30px_rgb(0,0,0,0.06)] backdrop-blur-2xl`}>
@@ -117,49 +126,47 @@ export const Dashboard = ({ report, packageName = 'com.unknown.app' }: Dashboard
         </div>
       </section>
 
-      {report.install_verdict && (
-        <section className={`rounded-2xl border p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-2xl sm:p-8 ${
-          report.install_verdict === 'YES' ? 'bg-emerald-500/10 border-emerald-500/30' :
-          report.install_verdict === 'CAUTION' ? 'bg-yellow-500/10 border-yellow-500/30' :
-          'bg-rose-500/10 border-rose-500/30'
-        }`}>
-          <div className="flex items-start gap-4">
-            <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border ${
-              report.install_verdict === 'YES' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' :
-              report.install_verdict === 'CAUTION' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' :
-              'bg-rose-500/20 text-rose-400 border-rose-500/30'
+      <section className={`rounded-2xl border p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-2xl sm:p-8 ${
+        derivedVerdict === 'YES' ? 'bg-emerald-500/10 border-emerald-500/30' :
+        derivedVerdict === 'CAUTION' ? 'bg-yellow-500/10 border-yellow-500/30' :
+        'bg-rose-500/10 border-rose-500/30'
+      }`}>
+        <div className="flex items-start gap-4">
+          <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border ${
+            derivedVerdict === 'YES' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' :
+            derivedVerdict === 'CAUTION' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' :
+            'bg-rose-500/20 text-rose-400 border-rose-500/30'
+          }`}>
+            {derivedVerdict === 'YES' ? <ShieldCheck className="h-6 w-6" /> :
+             derivedVerdict === 'CAUTION' ? <AlertTriangle className="h-6 w-6" /> :
+             <ShieldAlert className="h-6 w-6" />}
+          </span>
+          <div>
+            <h2 className={`text-xl font-bold mb-2 ${
+              derivedVerdict === 'YES' ? 'text-emerald-400' :
+              derivedVerdict === 'CAUTION' ? 'text-yellow-400' :
+              'text-rose-400'
             }`}>
-              {report.install_verdict === 'YES' ? <ShieldCheck className="h-6 w-6" /> :
-               report.install_verdict === 'CAUTION' ? <AlertTriangle className="h-6 w-6" /> :
-               <ShieldAlert className="h-6 w-6" />}
-            </span>
-            <div>
-              <h2 className={`text-xl font-bold mb-2 ${
-                report.install_verdict === 'YES' ? 'text-emerald-400' :
-                report.install_verdict === 'CAUTION' ? 'text-yellow-400' :
-                'text-rose-400'
-              }`}>
-                {report.install_verdict === 'YES' ? 'Safe to Install' :
-                 report.install_verdict === 'CAUTION' ? 'Proceed with Caution' :
-                 'DO NOT INSTALL'}
-              </h2>
-              {report.install_guidelines && report.install_guidelines.length > 0 ? (
-                <ul className="list-disc pl-5 space-y-1 text-slate-300 text-sm">
-                  {report.install_guidelines.map((guide, idx) => (
-                    <li key={idx}>{guide}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-slate-300">
-                  {report.install_verdict === 'YES' ? 'No suspicious activities detected.' :
-                   report.install_verdict === 'CAUTION' ? 'Review permissions carefully before using.' :
-                   'This application exhibits highly malicious behavior.'}
-                </p>
-              )}
-            </div>
+              {derivedVerdict === 'YES' ? 'Safe to Install' :
+               derivedVerdict === 'CAUTION' ? 'Proceed with Caution' :
+               'DO NOT INSTALL'}
+            </h2>
+            {derivedGuidelines && derivedGuidelines.length > 0 ? (
+              <ul className="list-disc pl-5 space-y-1 text-slate-300 text-sm">
+                {derivedGuidelines.map((guide, idx) => (
+                  <li key={idx}>{guide}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-slate-300">
+                {derivedVerdict === 'YES' ? 'No suspicious activities detected.' :
+                 derivedVerdict === 'CAUTION' ? 'Review permissions carefully before using.' :
+                 'This application exhibits highly malicious behavior.'}
+              </p>
+            )}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       <section className="rounded-2xl border border-white/10 bg-[#0a0a0e]/60 p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-2xl sm:p-8">
         <div className="mb-4 flex items-center gap-2 border-b border-white/5 pb-3">

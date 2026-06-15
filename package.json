@@ -1,0 +1,15 @@
+{
+  "name": "nirnay-ai-backend",
+  "version": "1.0.0",
+  "description": "GenAI-Based Automated Analysis and Risk Scoring of Fraudulent APKs",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "start:api": "npm run start --workspace=apps/api",
+    "start:worker": "npm run start --workspace=apps/worker",
+    "start:whatsapp": "npm run start --workspace=apps/whatsapp"
+  }
+}

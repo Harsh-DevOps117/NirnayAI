@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String?
+  googleId      String?  @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  scans         AppScan[]
+  refreshTokens RefreshToken[]
+}
+
+enum ScanStatus {
+  QUEUED
+  STATIC_SCANNING
+  DYNAMIC_SCANNING
+  AI_ANALYZING
+  COMPLETED
+  FAILED
+}
+
+model AppScan {
+  id               String     @id @default(uuid())
+  userId           String
+  user             User       @relation(fields: [userId], references: [id])
+  filename         String
+  fileHash         String
+  status           ScanStatus @default(QUEUED)
+  mobsfHash        String?
+  finalReportJson  Json?
+  cloudinaryUrl    String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}

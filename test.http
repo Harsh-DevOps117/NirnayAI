@@ -1,0 +1,74 @@
+### Variables
+@baseUrl = http://localhost:3000/api/v1
+@email = test@nirnayai.local
+@password = Password123!
+@botToken = bot-super-secret-token
+
+### 1. Register a new user
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### 2. Login to get Access Token
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### Capture the Access Token from Login
+@accessToken = {{login.response.body.accessToken}}
+@refreshToken = {{login.response.body.refreshToken}}
+
+### 3. Upload an APK for Analysis (Requires valid accessToken)
+# Make sure to run this through an IDE extension like "REST Client" in VS Code
+# and select a valid .apk file from your system.
+POST {{baseUrl}}/scan/upload
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="apk"; filename="test.apk"
+Content-Type: application/vnd.android.package-archive
+
+< ./path_to_your_malware.apk
+--WebAppBoundary--
+
+### 4. Check Scan Status
+# Replace :id with the scanId returned from the upload request
+@scanId = 1
+GET {{baseUrl}}/scan/status/{{scanId}}
+Authorization: Bearer {{accessToken}}
+
+### 5. Get Final AI Report
+GET {{baseUrl}}/scan/report/{{scanId}}
+Authorization: Bearer {{accessToken}}
+
+### 6. Refresh the JWT Token
+POST {{baseUrl}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+### 7. WhatsApp Bot Upload Bypass (No JWT required, uses Bot Token)
+POST {{baseUrl}}/scan/bot-upload
+x-bot-token: {{botToken}}
+x-whatsapp-sender: 1234567890@s.whatsapp.net
+Content-Type: multipart/form-data; boundary=BotBoundary
+
+--BotBoundary
+Content-Disposition: form-data; name="apk"; filename="test.apk"
+Content-Type: application/vnd.android.package-archive
+
+< ./path_to_your_malware.apk
+--BotBoundary--

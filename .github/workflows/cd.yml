@@ -98,5 +98,9 @@ jobs:
             # Restart services
             docker compose up -d
             
+            # Wait for postgres to be ready and apply Prisma schema
+            echo "Applying Prisma Database Schema..."
+            docker compose exec -T api-server bash -c "cd /app/packages/db && npx prisma db push --accept-data-loss"
+            
             # Clean up old unused images
             docker image prune -f

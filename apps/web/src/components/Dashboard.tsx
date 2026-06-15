@@ -58,10 +58,10 @@ export const Dashboard = ({ report, packageName = 'com.unknown.app' }: Dashboard
   const derivedVerdict = report.install_verdict || (report.risk_score < 50 ? 'YES' : report.risk_score < 80 ? 'CAUTION' : 'NO');
   const derivedGuidelines = report.install_guidelines || (
     report.risk_score < 50 
-      ? ["You can safely install and use this application.", "No critical hidden threats or severe malware behaviors were detected."]
+      ? ["No severe malware behaviors were detected. It is safe to proceed with the installation."]
       : report.risk_score < 80
-      ? ["You can keep this app, but proceed with caution.", "Review the permissions requested by the app in your device settings.", "Do not grant SMS, Call Log, or Accessibility permissions unless absolutely necessary.", "Monitor the app for unexpected battery drain or network usage."]
-      : ["Do not install this application under any circumstances.", "It exhibits severe malicious capabilities such as overlay attacks or data exfiltration.", "If already installed, remove it immediately and change your banking passwords."]
+      ? ["The app is acceptable to keep, but users should review sensitive permissions (e.g., SMS, Contacts) and monitor for unusual battery drain."]
+      : ["Critical Threat Detected. High risk of dangerous behaviors like screen overlays or data exfiltration. Immediate removal/blocking is advised."]
   );
 
   return (

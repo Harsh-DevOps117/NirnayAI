@@ -3,6 +3,7 @@ version: "3.8"
 services:
   postgres:
     image: postgres:15-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_USER: nirnay
       POSTGRES_PASSWORD: nirnaypassword
@@ -19,6 +20,7 @@ services:
 
   redis:
     image: redis:7-alpine
+    restart: unless-stopped
     ports:
       - "6379:6379"
     volumes:
@@ -26,6 +28,7 @@ services:
 
   mobsf:
     image: opensecurity/mobile-security-framework-mobsf:latest
+    restart: unless-stopped
     ports:
       - "8000:8000"
     environment:
@@ -49,6 +52,7 @@ services:
 
   web:
     image: ghcr.io/harsh-devops117/nirnayai/web:latest
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/web/Dockerfile
@@ -59,6 +63,7 @@ services:
 
   api-server:
     image: ghcr.io/harsh-devops117/nirnayai/api-server:latest
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/api/Dockerfile
@@ -79,6 +84,7 @@ services:
 
   worker:
     image: ghcr.io/harsh-devops117/nirnayai/worker:latest
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/worker/Dockerfile
@@ -95,6 +101,7 @@ services:
 
   whatsapp-bot:
     image: ghcr.io/harsh-devops117/nirnayai/whatsapp-bot:latest
+    restart: unless-stopped
     build:
       context: .
       dockerfile: apps/whatsapp/Dockerfile

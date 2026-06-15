@@ -20,7 +20,11 @@ async function connectToWhatsApp() {
     });
 
     const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
-    const redisPublisher = new Redis(redisUrl);
+    const redisPublisher = new Redis(redisUrl, { maxRetriesPerRequest: null });
+    
+    redisPublisher.on('error', (error) => {
+        console.error('Redis Connection Error:', error.message);
+    });
 
     sock.ev.on('connection.update', async (update) => {
         const { connection, lastDisconnect, qr } = update;

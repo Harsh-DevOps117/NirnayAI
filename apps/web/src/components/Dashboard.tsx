@@ -131,7 +131,7 @@ export const Dashboard = ({ report, packageName = 'com.unknown.app' }: Dashboard
         derivedVerdict === 'CAUTION' ? 'bg-yellow-500/10 border-yellow-500/30' :
         'bg-rose-500/10 border-rose-500/30'
       }`}>
-        <div className="flex items-start gap-4">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
           <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border ${
             derivedVerdict === 'YES' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' :
             derivedVerdict === 'CAUTION' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30' :
@@ -141,8 +141,8 @@ export const Dashboard = ({ report, packageName = 'com.unknown.app' }: Dashboard
              derivedVerdict === 'CAUTION' ? <AlertTriangle className="h-6 w-6" /> :
              <ShieldAlert className="h-6 w-6" />}
           </span>
-          <div>
-            <h2 className={`text-xl font-bold mb-2 ${
+          <div className="w-full">
+            <h2 className={`text-xl font-bold mb-3 sm:mb-2 ${
               derivedVerdict === 'YES' ? 'text-emerald-400' :
               derivedVerdict === 'CAUTION' ? 'text-yellow-400' :
               'text-rose-400'
@@ -152,7 +152,7 @@ export const Dashboard = ({ report, packageName = 'com.unknown.app' }: Dashboard
                'DO NOT INSTALL'}
             </h2>
             {derivedGuidelines && derivedGuidelines.length > 0 ? (
-              <ul className="list-disc pl-5 space-y-1 text-slate-300 text-sm">
+              <ul className="list-none sm:list-disc sm:pl-5 space-y-2 sm:space-y-1 text-slate-300 text-sm">
                 {derivedGuidelines.map((guide, idx) => (
                   <li key={idx}>{guide}</li>
                 ))}

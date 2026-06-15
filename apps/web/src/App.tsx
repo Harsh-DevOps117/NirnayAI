@@ -1,12 +1,17 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
-import { Landing } from './pages/Landing';
-import { UnderConstruction } from './pages/UnderConstruction';
-import DashboardView from './pages/DashboardView';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
+import { Landing } from "./pages/Landing";
+import { UnderConstruction } from "./pages/UnderConstruction";
+import DashboardView from "./pages/DashboardView";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -21,25 +26,47 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />} />
-      <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate to="/dashboard" />} />
-      
-      <Route 
-        path="/dashboard" 
+      <Route
+        path="/login"
+        element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />}
+      />
+      <Route
+        path="/register"
+        element={!isAuthenticated ? <Register /> : <Navigate to="/dashboard" />}
+      />
+
+      <Route
+        path="/dashboard"
         element={
           <ProtectedRoute>
             <DashboardView />
           </ProtectedRoute>
-        } 
+        }
       />
-      
+
       <Route path="/" element={<Landing />} />
-      
-      {['/threat-grid', '/api', '/alerts'].map(path => (
-        <Route key={path} path={path} element={<ProtectedRoute><UnderConstruction /></ProtectedRoute>} />
+
+      {["/threat-grid", "/api", "/alerts"].map((path) => (
+        <Route
+          key={path}
+          path={path}
+          element={
+            <ProtectedRoute>
+              <UnderConstruction />
+            </ProtectedRoute>
+          }
+        />
       ))}
 
-      {['/docs', '/api-reference', '/blog', '/reports', '/privacy', '/terms', '/disclosure'].map(path => (
+      {[
+        "/docs",
+        "/api-reference",
+        "/blog",
+        "/reports",
+        "/privacy",
+        "/terms",
+        "/disclosure",
+      ].map((path) => (
         <Route key={path} path={path} element={<UnderConstruction />} />
       ))}
     </Routes>

@@ -17,7 +17,7 @@ export const Login = () => {
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    
+
     if (!email || !password) return;
 
     setIsLoading(true);
@@ -25,11 +25,19 @@ export const Login = () => {
       const response = await axios.post("/auth/login", { email, password });
       if (response.data.success) {
         toast.success("Authorization granted", { theme: "dark" });
-        login(response.data.data.accessToken, response.data.data.refreshToken, response.data.data.user);
+        login(
+          response.data.data.accessToken,
+          response.data.data.refreshToken,
+          response.data.data.user,
+        );
         navigate("/dashboard");
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Authentication failed. Intrusion logged.", { theme: "dark" });
+      toast.error(
+        err.response?.data?.message ||
+          "Authentication failed. Intrusion logged.",
+        { theme: "dark" },
+      );
     } finally {
       setIsLoading(false);
     }
@@ -40,11 +48,17 @@ export const Login = () => {
       <MeshBackground />
       <div className="relative z-10">
         <SignInPage
-          title={<span className="font-semibold text-white tracking-tighter">Establish Connection</span>}
+          title={
+            <span className="font-semibold text-white tracking-tighter">
+              Establish Connection
+            </span>
+          }
           description="Authenticate to access the NirnayAI global threat grid. Upload binaries, decode malicious intent, and track advanced persistent threats in real-time."
           rightPanelContent={<CyberVisual />}
           onSignIn={handleSignIn}
-          onResetPassword={() => toast.info("Password reset flow initiated", { theme: "dark" })}
+          onResetPassword={() =>
+            toast.info("Password reset flow initiated", { theme: "dark" })
+          }
           onCreateAccount={() => navigate("/register")}
           isLoading={isLoading}
         />

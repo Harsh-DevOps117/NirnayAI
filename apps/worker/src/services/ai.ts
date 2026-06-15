@@ -1,12 +1,14 @@
-import OpenAI from 'openai';
+import OpenAI from "openai";
 
 const openai = new OpenAI({
   apiKey: process.env.GROQ_API_KEY,
   baseURL: "https://api.groq.com/openai/v1",
 });
 
-export const analyzeMobSFReport = async (staticReport: any, dynamicReport: any): Promise<any> => {
-  // 1. Extract critical information to prevent token overflow
+export const analyzeMobSFReport = async (
+  staticReport: any,
+  dynamicReport: any,
+): Promise<any> => {
   const extractedData = {
     appName: staticReport.app_name,
     packageName: staticReport.package_name,
@@ -15,10 +17,9 @@ export const analyzeMobSFReport = async (staticReport: any, dynamicReport: any):
     malwareAnalysis: staticReport.malware_analyzer,
     vulnerabilities: staticReport.manifest_analysis,
     networkActivity: dynamicReport?.network_events,
-    apiHooks: dynamicReport?.frida_api_hooks
+    apiHooks: dynamicReport?.frida_api_hooks,
   };
 
-  // 2. Build the prompt
   const prompt = `
     You are an elite Cyber Fraud Investigator specialized in mobile banking malware and reverse engineering. Your job is to analyze raw static analysis metadata extracted from an Android APK by MobSF and translate it into a structured, executive-grade fraud risk report.
 
@@ -55,17 +56,19 @@ export const analyzeMobSFReport = async (staticReport: any, dynamicReport: any):
     ${JSON.stringify(extractedData, null, 2)}
   `;
 
-  // 3. Call OpenAI
   const response = await openai.chat.completions.create({
-    model: "llama-3.3-70b-versatile", // Groq's high-performance model
+    model: "llama-3.3-70b-versatile",
     messages: [
-      { role: "system", content: "You are a cyber security expert. You always respond in raw JSON format." },
-      { role: "user", content: prompt }
+      {
+        role: "system",
+        content:
+          "You are a cyber security expert. You always respond in raw JSON format.",
+      },
+      { role: "user", content: prompt },
     ],
     response_format: { type: "json_object" },
-    temperature: 0.2
+    temperature: 0.2,
   });
-
 
   const content = response.choices[0].message.content;
   if (!content) {

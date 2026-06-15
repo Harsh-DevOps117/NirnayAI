@@ -24,23 +24,36 @@ export const Register = () => {
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    
+
     if (!email || !password || !name) return;
 
     setIsLoading(true);
     try {
-      const response = await axios.post("/auth/register", { name, email, password });
+      const response = await axios.post("/auth/register", {
+        name,
+        email,
+        password,
+      });
       if (response.data.success) {
-        toast.success("Profile created. Securing connection...", { theme: "dark" });
+        toast.success("Profile created. Securing connection...", {
+          theme: "dark",
+        });
 
         const loginRes = await axios.post("/auth/login", { email, password });
         if (loginRes.data.success) {
-          login(loginRes.data.data.accessToken, loginRes.data.data.refreshToken, loginRes.data.data.user);
+          login(
+            loginRes.data.data.accessToken,
+            loginRes.data.data.refreshToken,
+            loginRes.data.data.user,
+          );
           navigate("/dashboard");
         }
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Registration failed. Please try again.", { theme: "dark" });
+      toast.error(
+        err.response?.data?.message || "Registration failed. Please try again.",
+        { theme: "dark" },
+      );
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +64,11 @@ export const Register = () => {
       <MeshBackground />
       <div className="relative z-10">
         <SignInPage
-          title={<span className="font-semibold text-white tracking-tighter">Initialize Access</span>}
+          title={
+            <span className="font-semibold text-white tracking-tighter">
+              Initialize Access
+            </span>
+          }
           description="Request clearance to access the NirnayAI platform. Register your identity to unlock dynamic analysis and AI threat decoding."
           rightPanelContent={<CyberVisual />}
           onSignIn={handleRegisterSubmit}
@@ -61,9 +78,17 @@ export const Register = () => {
           footerLinkText="Initiate Login Sequence"
         >
           <div className="animate-element animate-delay-200">
-            <label className="text-sm font-medium text-slate-400">Codename / Full Name</label>
+            <label className="text-sm font-medium text-slate-400">
+              Codename / Full Name
+            </label>
             <GlassInputWrapper>
-              <input name="name" type="text" placeholder="Operator Jane" className="w-full bg-transparent text-sm p-4 rounded-2xl focus:outline-none text-white placeholder:text-slate-600" required />
+              <input
+                name="name"
+                type="text"
+                placeholder="Operator Jane"
+                className="w-full bg-transparent text-sm p-4 rounded-2xl focus:outline-none text-white placeholder:text-slate-600"
+                required
+              />
             </GlassInputWrapper>
           </div>
         </SignInPage>

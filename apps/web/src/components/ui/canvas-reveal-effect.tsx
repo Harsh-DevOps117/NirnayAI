@@ -50,14 +50,14 @@ export const CanvasRevealEffect = ({
             opacities ?? [0.3, 0.3, 0.3, 0.5, 0.5, 0.5, 0.8, 0.8, 0.8, 1]
           }
           shader={`
-            ${reverse ? 'u_reverse_active' : 'false'}_;
+            ${reverse ? "u_reverse_active" : "false"}_;
             animation_speed_factor_${animationSpeed.toFixed(1)}_;
           `}
           center={["x", "y"]}
         />
       </div>
       {showGradient && (
-         <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
       )}
     </div>
   );
@@ -218,7 +218,6 @@ const DotMatrix: React.FC<DotMatrixProps> = ({
   );
 };
 
-
 const ShaderMaterial = ({
   source,
   uniforms,
@@ -265,7 +264,7 @@ const ShaderMaterial = ({
         case "uniform3fv":
           preparedUniforms[uniformName] = {
             value: (uniform.value as number[][]).map((v: number[]) =>
-              new THREE.Vector3().fromArray(v)
+              new THREE.Vector3().fromArray(v),
             ),
             type: "3fv",
           };

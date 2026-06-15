@@ -32,7 +32,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - MOBSF_API_KEY=${MOBSF_API_KEY}
+      - MOBSF_API_KEY=mobsfapikey123
       - MOBSF_ANALYZER_IDENTIFIER=android-sandbox-1:5555
     volumes:
       - mobsfdata:/home/mobsf/.MobSF
@@ -93,6 +93,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://nirnay:nirnaypassword@postgres:5432/nirnayai?schema=public
       - REDIS_URL=redis://redis:6379
+      - MOBSF_URL=http://mobsf:8000
     volumes:
       - uploadsdata:/app/uploads
     depends_on:

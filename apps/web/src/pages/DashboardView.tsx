@@ -83,10 +83,17 @@ const StatusBadge = ({ status }: { status: string }) => {
 
   const Icon = status === 'COMPLETED' ? CheckCircle2 : status === 'FAILED' ? XCircle : Loader2;
 
+  let text = 'Analyzing';
+  if (status === 'STATIC_SCANNING') text = 'Static Analysis';
+  if (status === 'DYNAMIC_SCANNING') text = 'Sandbox Testing';
+  if (status === 'AI_SUMMARIZATION') text = 'Generating Intelligence';
+  if (status === 'COMPLETED') text = 'Complete';
+  if (status === 'FAILED') text = 'Failed';
+
   return (
-    <span className={cn('inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-medium', styles)}>
+    <span className={cn('inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-xs font-medium w-max', styles)}>
       <Icon className={cn('h-3.5 w-3.5', status !== 'COMPLETED' && status !== 'FAILED' && 'animate-spin')} />
-      {status === 'COMPLETED' ? 'Complete' : status === 'FAILED' ? 'Failed' : 'Analyzing'}
+      {text}
     </span>
   );
 };
@@ -216,6 +223,7 @@ const RiskGauge = ({ score }: { score: number }) => {
 
 function DashboardView() {
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
+  const [currentDetailedStatus, setCurrentDetailedStatus] = useState<string>('');
   const [report, setReport] = useState<AIRiskReport | null>(null);
   const [packageName, setPackageName] = useState('');
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
@@ -250,6 +258,8 @@ function DashboardView() {
       try {
         const res = await axios.get(`/scan/status/${scanId}`);
         const status = res.data?.data?.status;
+
+        if (status) setCurrentDetailedStatus(status);
 
         if (status === 'COMPLETED' && res.data?.data?.finalReportJson) {
           clearInterval(interval);
@@ -514,9 +524,9 @@ function DashboardView() {
             </div>
             <div className="space-y-4">
               <PipelineStep label="Upload target APK" complete={uploadStatus === 'analyzing' || uploadStatus === 'success'} active={uploadStatus === 'uploading'} />
-              <PipelineStep label="Static code analysis" complete={uploadStatus === 'success'} active={uploadStatus === 'analyzing'} />
-              <PipelineStep label="Manifest and permission mapping" complete={uploadStatus === 'success'} active={uploadStatus === 'analyzing'} />
-              <PipelineStep label="Generate intelligence report" complete={uploadStatus === 'success'} />
+              <PipelineStep label="Static code analysis" complete={['DYNAMIC_SCANNING', 'AI_SUMMARIZATION', 'COMPLETED'].includes(currentDetailedStatus)} active={currentDetailedStatus === 'STATIC_SCANNING'} />
+              <PipelineStep label="Manifest and permission mapping" complete={['AI_SUMMARIZATION', 'COMPLETED'].includes(currentDetailedStatus)} active={currentDetailedStatus === 'DYNAMIC_SCANNING' || currentDetailedStatus === 'STATIC_SCANNING'} />
+              <PipelineStep label="Generate intelligence report" complete={currentDetailedStatus === 'COMPLETED'} active={currentDetailedStatus === 'AI_SUMMARIZATION'} />
             </div>
           </motion.div>
 
@@ -625,7 +635,7 @@ function DashboardView() {
                               score < 35 && 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
                             )}
                           >
-                            {scan.status === 'COMPLETED' ? score : 'Pending'}
+                            {scan.status === 'COMPLETED' ? score : '--'}
                           </span>
                         </td>
                         <td className="px-5 py-4">
